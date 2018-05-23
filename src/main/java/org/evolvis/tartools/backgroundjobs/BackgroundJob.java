@@ -28,31 +28,32 @@ package org.evolvis.tartools.backgroundjobs;
  */
 
 /**
- * A unit of work that may be processed asynchronously. <br>
- * <br>
+ * A unit of work that may be processed asynchronously.
+ *
  * An instance of this class represents a potentially long-running task that may
- * be scheduled and processed asynchronously by a {@link BackgroundJobScheduler}
- * . <br>
- * <br>
- * This interface models the "inside" part of the contract that is to be
+ * be scheduled and processed asynchronously by a {@link BackgroundJobScheduler}.
+ *
+ * This interface models the “inside” part of the contract that is to be
  * fulfilled by the code implementing a particular job.
  *
  * To schedule a job, use {@link BackgroundJobScheduler#schedule(BackgroundJob)}
  * or {@link BackgroundJobScheduler#schedule(String, BackgroundJob)}.
  *
- * @see {@link BackgroundJobInfo}, {@link BackgroundJobScheduler}, {@link BackgroundJobStatus}
+ * See also: {@link BackgroundJobInfo}, {@link BackgroundJobScheduler},
+ * {@link BackgroundJobStatus}
+ *
  * @author lukas
  *
  * @param <V>
  */
 public interface BackgroundJob<V> {
 	/**
-	 * Execute the Job.<br>
-	 * <br>
+	 * Execute the Job.
+	 *
 	 * This method is typically called by some sort of scheduler.
-	 * <br>
+	 *
 	 * <b>This method should never be called twice on the same instance!</b>
-	 * <br>
+	 *
 	 * While executing, implementations should use the
 	 * {@link BackgroundJobMonitor} to communicate with the scheduler:
 	 * <ul>
@@ -71,7 +72,6 @@ public interface BackgroundJob<V> {
 	 * execution of this job using the
 	 * {@link BackgroundJobMonitor#getScheduledJobId()} Method.</li>
 	 * </ul>
-	 *
 	 *
 	 * @param monitor
 	 *            The job monitor that should be used to communicate with the
