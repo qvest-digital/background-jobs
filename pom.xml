@@ -4,7 +4,23 @@
 	<artifactId>background-jobs</artifactId>
 	<version>1.18-SNAPSHOT</version>
 	<packaging>jar</packaging>
-	<name>Background-Jobs</name>
+	<name>${project.groupId}:${project.artifactId}</name>
+	<description>Background-Jobs</description>
+	<url>https://evolvis.org/plugins/scmgit/cgi-bin/gitweb.cgi?p=tartools/background-jobs.git</url>
+	<licenses>
+		<license>
+			<name>MIT licence</name>
+			<url>https://opensource.org/licenses/mit-license.php</url>
+		</license>
+	</licenses>
+	<developers>
+		<developer>
+			<name>Lukas Degener</name>
+			<email>l.degener@tarent.de</email>
+			<organization>⮡ tarent</organization>
+			<organizationUrl>http://www.tarent.de/</organizationUrl>
+		</developer>
+	</developers>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<sonar.sources>src/main</sonar.sources>
@@ -31,21 +47,20 @@
 		<junit.version>4.4</junit.version>
 	</properties>
 	<scm>
+		<connection>scm:git:https://evolvis.org/anonscm/git/tartools/background-jobs.git</connection>
 		<developerConnection>scm:git:ssh://maven@evolvis.org/scmrepos/git/tartools/background-jobs.git</developerConnection>
 		<url>https://evolvis.org/plugins/scmgit/cgi-bin/gitweb.cgi?p=tartools/background-jobs.git</url>
 		<tag>HEAD</tag>
 	</scm>
 	<distributionManagement>
-		<repository>
-			<id>tarent-nexus</id>
-			<name>tarent-nexus releases</name>
-			<url>https://repo-bn-01.lan.tarent.de/repository/maven-releases</url>
-		</repository>
 		<snapshotRepository>
-			<id>tarent-nexus</id>
-			<name>tarent-nexus snapshots</name>
-			<url>https://repo-bn-01.lan.tarent.de/repository/maven-snapshots</url>
+			<id>ossrh</id>
+			<url>https://oss.sonatype.org/content/repositories/snapshots</url>
 		</snapshotRepository>
+		<repository>
+			<id>ossrh</id>
+			<url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+		</repository>
 	</distributionManagement>
 	<dependencyManagement>
 		<dependencies>
