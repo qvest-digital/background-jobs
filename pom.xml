@@ -2,7 +2,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.evolvis.tartools</groupId>
 	<artifactId>background-jobs</artifactId>
-	<version>1.17-SNAPSHOT</version>
+	<version>1.17</version>
 	<packaging>jar</packaging>
 	<name>Background-Jobs</name>
 	<properties>
@@ -31,7 +31,7 @@
 	<scm>
 		<developerConnection>scm:git:ssh://maven@evolvis.org/scmrepos/git/tartools/background-jobs.git</developerConnection>
 		<url>https://evolvis.org/plugins/scmgit/cgi-bin/gitweb.cgi?p=tartools/background-jobs.git</url>
-		<tag>HEAD</tag>
+		<tag>background-jobs-1.17</tag>
 	</scm>
 	<distributionManagement>
 		<repository>
