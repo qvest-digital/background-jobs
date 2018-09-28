@@ -1,5 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>org.evolvis.tartools</groupId>
+		<artifactId>maven-parent</artifactId>
+		<version>1.4</version>
+	</parent>
 	<groupId>org.evolvis.tartools</groupId>
 	<artifactId>background-jobs</artifactId>
 	<version>1.19-SNAPSHOT</version>
@@ -22,28 +28,14 @@
 		</developer>
 	</developers>
 	<properties>
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<sonar.sources>src/main</sonar.sources>
 		<sonar.tests>src/test</sonar.tests>
-		<maven.build.timestamp.format>yyyyMMdd-HHmm</maven.build.timestamp.format>
-		<build.timestamp>${maven.build.timestamp}</build.timestamp>
-		<releaseVersion>${project.version}</releaseVersion>
-		<archiver.copyright>Copyright © 2012–2016 tarent solutions GmbH</archiver.copyright>
-		<java.version>1.8</java.version>
-		<!-- maven plugins -->
-		<maven.compiler.version>3.5.1</maven.compiler.version>
-		<maven.deploy.version>2.8.1</maven.deploy.version>
-		<maven.deploy.wagon-ssh.version>2.6</maven.deploy.wagon-ssh.version>
-		<maven.enforcer.version>1.4.1</maven.enforcer.version>
-		<maven.jacoco.version>0.7.6.201602180812</maven.jacoco.version>
-		<maven.jar.version>2.6</maven.jar.version>
-		<maven.javadoc.version>2.8</maven.javadoc.version>
-		<maven.mycila.version>3.0</maven.mycila.version>
-		<maven.release.version>2.5.3</maven.release.version>
-		<maven.source.version>2.4</maven.source.version>
-		<maven.surefire.version>2.13</maven.surefire.version>
+		<archiver.copyright.firstyear>2012</archiver.copyright.firstyear>
+		<archiver.copyright.lastyear>2016</archiver.copyright.lastyear>
+		<!-- for now (legacy code) -->
+		<doclint.optappend>-Xdoclint:none</doclint.optappend>
 		<!-- dependencies -->
-		<mockito.version>1.10.19</mockito.version>
+		<mockito1.version>1.10.19</mockito1.version>
 		<junit.version>4.4</junit.version>
 	</properties>
 	<scm>
@@ -52,67 +44,6 @@
 		<url>https://evolvis.org/plugins/scmgit/cgi-bin/gitweb.cgi?p=tartools/background-jobs.git</url>
 		<tag>HEAD</tag>
 	</scm>
-	<distributionManagement>
-		<snapshotRepository>
-			<id>ossrh</id>
-			<url>https://oss.sonatype.org/content/repositories/snapshots</url>
-		</snapshotRepository>
-		<repository>
-			<id>ossrh</id>
-			<url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
-		</repository>
-	</distributionManagement>
-	<dependencyManagement>
-		<dependencies>
-			<dependency>
-				<groupId>junit</groupId>
-				<artifactId>junit</artifactId>
-				<version>${junit.version}</version>
-				<scope>test</scope>
-			</dependency>
-			<dependency>
-				<groupId>org.mockito</groupId>
-				<artifactId>mockito-core</artifactId>
-				<version>${mockito.version}</version>
-				<scope>test</scope>
-			</dependency>
-		</dependencies>
-	</dependencyManagement>
-	<dependencies>
-		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.mockito</groupId>
-			<artifactId>mockito-core</artifactId>
-			<scope>test</scope>
-		</dependency>
-	</dependencies>
-	<profiles>
-		<profile>
-			<id>gpg</id>
-			<build>
-				<plugins>
-					<plugin>
-						<groupId>org.apache.maven.plugins</groupId>
-						<artifactId>maven-gpg-plugin</artifactId>
-						<version>1.6</version>
-						<executions>
-							<execution>
-								<id>sign-artifacts</id>
-								<phase>verify</phase>
-								<goals>
-									<goal>sign</goal>
-								</goals>
-							</execution>
-						</executions>
-					</plugin>
-				</plugins>
-			</build>
-		</profile>
-	</profiles>
 	<build>
 		<sourceDirectory>src/main/java</sourceDirectory>
 		<testSourceDirectory>src/test/java</testSourceDirectory>
@@ -130,204 +61,47 @@
 				<filtering>true</filtering>
 			</testResource>
 		</testResources>
-		<pluginManagement>
-			<plugins>
-				<plugin>
-					<groupId>org.jacoco</groupId>
-					<artifactId>jacoco-maven-plugin</artifactId>
-					<version>${maven.jacoco.version}</version>
-				</plugin>
-				<plugin>
-					<groupId>com.mycila</groupId>
-					<artifactId>license-maven-plugin</artifactId>
-					<version>${maven.mycila.version}</version>
-				</plugin>
-				<plugin>
-					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-compiler-plugin</artifactId>
-					<version>${maven.compiler.version}</version>
-					<configuration>
-						<source>${java.version}</source>
-						<target>${java.version}</target>
-						<encoding>${project.build.sourceEncoding}</encoding>
-						<compilerArgs>
-							<arg>-Xlint</arg>
-						</compilerArgs>
-					</configuration>
-				</plugin>
-				<!-- required for deployment to maven repo via ssh/sftp with maven 3 -->
-				<plugin>
-					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-deploy-plugin</artifactId>
-					<version>${maven.deploy.version}</version>
-					<dependencies>
-						<dependency>
-							<groupId>org.apache.maven.wagon</groupId>
-							<artifactId>wagon-ssh</artifactId>
-							<version>${maven.deploy.wagon-ssh.version}</version>
-						</dependency>
-					</dependencies>
-				</plugin>
-				<plugin>
-					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-enforcer-plugin</artifactId>
-					<version>${maven.enforcer.version}</version>
-				</plugin>
-				<plugin>
-					<artifactId>maven-jar-plugin</artifactId>
-					<version>${maven.jar.version}</version>
-					<configuration>
-						<archive>
-							<manifest>
-								<addDefaultImplementationEntries>true</addDefaultImplementationEntries>
-								<addDefaultSpecificationEntries>true</addDefaultSpecificationEntries>
-							</manifest>
-							<manifestEntries>
-								<Build-Job>${JOB_NAME}</Build-Job>
-								<Build-Id>${BUILD_ID}</Build-Id>
-								<Build-Number>${BUILD_NUMBER}</Build-Number>
-								<Build-Repository-Rev>${GIT_COMMIT}</Build-Repository-Rev>
-								<Build-Time>${maven.build.timestamp}</Build-Time>
-								<version_name>${project.artifactId}</version_name>
-								<version_description>${project.description}</version_description>
-								<version_copyright>${archiver.copyright}</version_copyright>
-								<version_vendor>tarent solutions GmbH (www.tarent.de)</version_vendor>
-								<version_version>${project.version}</version_version>
-							</manifestEntries>
-						</archive>
-					</configuration>
-				</plugin>
-				<plugin>
-					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-javadoc-plugin</artifactId>
-					<version>${maven.javadoc.version}</version>
-				</plugin>
-				<plugin>
-					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-release-plugin</artifactId>
-					<version>${maven.release.version}</version>
-				</plugin>
-				<plugin>
-					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-source-plugin</artifactId>
-					<version>${maven.source.version}</version>
-				</plugin>
-				<plugin>
-					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-surefire-plugin</artifactId>
-					<version>${maven.surefire.version}</version>
-				</plugin>
-			</plugins>
-		</pluginManagement>
 		<plugins>
 			<plugin>
 				<inherited>false</inherited>
 				<groupId>com.mycila</groupId>
 				<artifactId>license-maven-plugin</artifactId>
 				<configuration>
-					<basedir>${project.basedir}</basedir>
-					<header>${project.basedir}/src/ancillary/LICENCE.hdr</header>
-					<quiet>false</quiet>
-					<failIfMissing>true</failIfMissing>
-					<aggregate>true</aggregate>
-					<includes>
-						<include>**/*.java</include>
-					</includes>
-					<headerDefinitions>
-						<headerDefinition>${project.basedir}/src/ancillary/myc-javapkg.xml</headerDefinition>
-					</headerDefinitions>
-					<mapping>
-						<java>JavaPackage_style</java>
-					</mapping>
-					<useDefaultExcludes>true</useDefaultExcludes>
-					<useDefaultMapping>true</useDefaultMapping>
-					<encoding>UTF-8</encoding>
-					<strictCheck>true</strictCheck>
+					<header>${project.basedir}/src/main/ancillary/LICENCE.hdr</header>
 				</configuration>
 			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-compiler-plugin</artifactId>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-source-plugin</artifactId>
-				<executions>
-					<execution>
-						<id>attach-sources</id>
-						<phase>DISABLE_FORKED_LIFECYCLE_MSOURCES-13</phase>
-					</execution>
-					<execution>
-						<id>attach-sources-no-fork</id>
-						<phase>generate-sources</phase>
-						<goals>
-							<goal>jar-no-fork</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-javadoc-plugin</artifactId>
-				<configuration>
-					<!-- additionalparam>-Xdoclint:all -Xdoclint:-missing</additionalparam -->
-					<additionalparam>-Xdoclint:none</additionalparam>
-				</configuration>
-				<executions>
-					<execution>
-						<id>attach-javadocs</id>
-						<goals>
-							<goal>jar</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-release-plugin</artifactId>
-			</plugin>
-			<!-- JaCoCo: allows code coverage analysis in Sonar -->
-			<plugin>
-				<groupId>org.jacoco</groupId>
-				<artifactId>jacoco-maven-plugin</artifactId>
-				<executions>
-					<execution>
-						<id>jacoco-initialize</id>
-						<goals>
-							<goal>prepare-agent</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-surefire-plugin</artifactId>
-			</plugin>
-			<plugin>
-				<!-- Avoid the M.A.D. Gadget vulnerability in certain apache commons-collections versions -->
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-enforcer-plugin</artifactId>
-				<executions>
-					<execution>
-						<goals>
-							<goal>enforce</goal>
-						</goals>
-						<configuration>
-							<rules>
-								<bannedDependencies>
-									<excludes>
-										<exclude>commons-collections:commons-collections:[3.0,3.2.1]</exclude>
-										<exclude>commons-collections:commons-collections:4.0</exclude>
-									</excludes>
-								</bannedDependencies>
-							</rules>
-						</configuration>
-					</execution>
-				</executions>
-			</plugin>
-			<plugin>
 				<artifactId>maven-jar-plugin</artifactId>
 			</plugin>
 		</plugins>
 	</build>
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>junit</groupId>
+				<artifactId>junit</artifactId>
+				<version>${junit.version}</version>
+				<scope>test</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.mockito</groupId>
+				<artifactId>mockito-core</artifactId>
+				<version>${mockito1.version}</version>
+				<scope>test</scope>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
+	<dependencies>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.mockito</groupId>
+			<artifactId>mockito-core</artifactId>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
 </project>
