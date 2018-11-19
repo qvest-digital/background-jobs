@@ -3,9 +3,9 @@
 #
 # 326389e8f2c2220f5bc240ba907c36931615c1ca b906b9d41c51a31d1127e1f9f127bda7ee4c04b5
 #
-pom.xml.releaseBackup
-release.properties
-target/
 .classpath
 .project
 .settings/
+pom.xml.releaseBackup
+release.properties
+target/
