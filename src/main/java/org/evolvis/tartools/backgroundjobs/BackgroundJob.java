@@ -91,4 +91,26 @@ public interface BackgroundJob<V> {
 	 * @return a human-readable Description of the job.
 	 */
 	public String getDescription();
+
+	/**
+	 * Whether this job can be canceled.<br><br>
+	 *
+	 * While most jobs should allow cancellation by the user, there will be  cases
+	 * where it is just not feasible or even dangerous to abort a job once it is running (i.e.
+	 * once the {@link #work(BackgroundJobMonitor)} method is executing).
+	 * Those jobs usually simply ignore the value of {@link BackgroundJobMonitor#isAborting()} and
+	 * just keep on running until they are done.
+	 * <br>
+	 * If a job just cannot be cancelled, the UI should communicate this fact to the user (e.g. by not
+	 * showing a Cancel-Button in the first place). Implementations should override this method and return
+	 * <code>false</code>.
+	 * <br>
+	 * <b>NOTE:</b> While in state {@link BackgroundJobInfo.State#SCHEDULED}, a job can always be canceled,
+	 * regardless of what this method returns.
+	 * @return whether this job can be canceled once its execution has started.
+	 * @since 1.21
+	 */
+	public default boolean isCancellationSupported() {
+	    return true;
+	}
 }
