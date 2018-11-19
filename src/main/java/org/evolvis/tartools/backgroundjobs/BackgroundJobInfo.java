@@ -152,4 +152,12 @@ public interface BackgroundJobInfo {
     abstract long getLastModified();
 
     abstract long getStartTime();
+
+    /**
+     * @see BackgroundJob#isVisible()
+     * @since 1.21
+     * 
+     * @return a <code>boolean</code> indicating whether this job should be visible to the end user.
+     */
+    abstract boolean isVisible();
 }

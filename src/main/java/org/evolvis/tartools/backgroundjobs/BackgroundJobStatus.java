@@ -31,7 +31,8 @@ import java.util.concurrent.ExecutionException;
 
 /**
  * A handle on a scheduled {@link BackgroundJob}.
- * <br><br>
+ * <br>
+ * <br>
  * This interface extends the {@link BackgroundJobInfo} contract by adding
  * methods to {@link #abort()} or {@link #join(long)} a scheduled job, and to
  * obtain its {@link #result()} once it is done.
@@ -41,30 +42,45 @@ import java.util.concurrent.ExecutionException;
  * @param <T>
  */
 public interface BackgroundJobStatus<T> extends BackgroundJobInfo {
-	/**
-	 * Request the cancellation of a job.
-	 * <br><br>
-	 * This will try to interrupt the thread executing the job and it will make {@link BackgroundJobMonitor#isAborting()} return false.
-	 * Nevertheless it may take some time until the job actually stops whatever it is doing.
-	 */
-	public void abort();
+    /**
+     * Request the cancellation of a job.
+     * <br>
+     * <br>
+     * This will try to interrupt the thread executing the job and it will make {@link BackgroundJobMonitor#isAborting()} return false.
+     * Nevertheless it may take some time until the job actually stops whatever it is doing.
+     */
+    public void abort();
 
-	/**
-	 * Join the thread executing the job.
-	 * @param timeout the maximum number of milliseconds to wait for the job.
-	 * @throws InterruptedException
-	 */
-	public void join(long timeout) throws InterruptedException;
+    /**
+     * Join the thread executing the job.
+     * 
+     * @param timeout
+     *            the maximum number of milliseconds to wait for the job.
+     * @throws InterruptedException
+     */
+    public void join(long timeout) throws InterruptedException;
 
-	/**
-	 * Obtain the result produced by the job, waiting for its completion if necessary.
-	 * @return the result.
-	 * @throws InterruptedException
-	 * @throws ExecutionException
-	 */
-	public T result() throws InterruptedException, ExecutionException;
+    /**
+     * Obtain the result produced by the job, waiting for its completion if necessary.
+     * 
+     * @return the result.
+     * @throws InterruptedException
+     * @throws ExecutionException
+     */
+    public T result() throws InterruptedException, ExecutionException;
 
-	void addJobListener(JobListener l);
+    /**
+     * Whether this job can be canceled.<br>
+     * <br>
+     *
+     * @see BackgroundJob#isCancellationSupported()
+     * 
+     * @return a <code>boolean</code> indicating whether this job can be canceled once its execution has started.
+     * @since 1.21
+     */
+    public boolean isCancellationSupported();
 
-	void removeJobListener(JobListener l);
+    void addJobListener(JobListener l);
+
+    void removeJobListener(JobListener l);
 }

@@ -51,6 +51,8 @@ class ScheduledJob<T> implements BackgroundJobStatus<T> {
     private boolean aborting;
     private long startTime;
     private long lastModified;
+    final private boolean visible;
+    final private boolean cancellationSupported;
 
     public ScheduledJob(final BackgroundJob<T> job,
             final BackgroundThreadFactory threadFactory,
@@ -113,6 +115,8 @@ class ScheduledJob<T> implements BackgroundJobStatus<T> {
             final BackgroundJobLogFactory jobLogFactory) {
         this.id = id;
         this.description = job.getDescription();
+        this.visible = job.isVisible();
+        this.cancellationSupported = job.isCancellationSupported();
         this.jobClass = job.getClass();
         startTime = System.currentTimeMillis();
         final Callable<T> callable;
@@ -166,8 +170,7 @@ class ScheduledJob<T> implements BackgroundJobStatus<T> {
             if (getState() == State.ABORTING_STARTING) {
                 setState(State.ABORTING);
                 future.cancel(true);
-            }
-            else {
+            } else {
                 setState(State.RUNNING);
             }
         }
@@ -324,5 +327,15 @@ class ScheduledJob<T> implements BackgroundJobStatus<T> {
     @Override
     public long getStartTime() {
         return startTime;
+    }
+
+    @Override
+    public boolean isVisible() {
+        return visible;
+    }
+
+    @Override
+    public boolean isCancellationSupported() {
+        return cancellationSupported;
     }
 }
