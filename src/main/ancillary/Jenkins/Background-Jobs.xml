@@ -101,6 +101,22 @@
       <permission>hudson.scm.SCM.Tag:tglase</permission>
       <permission>hudson.scm.SCM.Tag:thense</permission>
     </hudson.security.AuthorizationMatrixProperty>
+    <hudson.model.ParametersDefinitionProperty>
+      <parameterDefinitions>
+        <hudson.model.ChoiceParameterDefinition>
+          <name>DSTREPO_PROFILE</name>
+          <description>Profile to select the destination
+Maven repository to deploy into.
+Only relevant when performing a release.</description>
+          <choices class="java.util.Arrays$ArrayList">
+            <a class="string-array">
+              <string>tarent</string>
+              <string>central</string>
+            </a>
+          </choices>
+        </hudson.model.ChoiceParameterDefinition>
+      </parameterDefinitions>
+    </hudson.model.ParametersDefinitionProperty>
     <org.jenkins.plugins.lockableresources.RequiredResourcesProperty plugin="lockable-resources@1.7">
       <resourceNames>mr_tartools</resourceNames>
     </org.jenkins.plugins.lockableresources.RequiredResourcesProperty>
