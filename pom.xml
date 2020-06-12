@@ -36,7 +36,7 @@
 		<sonar.tests>src/test</sonar.tests>
 		<!-- dependencies -->
 		<mockito1.version>1.10.19</mockito1.version>
-		<junit.version>4.4</junit.version>
+		<junit.version>4.13</junit.version>
 	</properties>
 	<scm>
 		<connection>scm:git:https://evolvis.org/anonscm/git/tartools/background-jobs.git</connection>
