@@ -73,10 +73,6 @@
 				</configuration>
 			</plugin>
 			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-jar-plugin</artifactId>
-			</plugin>
-			<plugin>
 				<!-- mvn -Ddependency-check.skip … -->
 				<groupId>org.owasp</groupId>
 				<artifactId>dependency-check-maven</artifactId>
