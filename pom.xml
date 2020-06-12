@@ -37,6 +37,8 @@
 		<!-- dependencies -->
 		<mockito1.version>1.10.19</mockito1.version>
 		<junit.version>4.13</junit.version>
+		<!-- maven plugins -->
+		<maven.owasp.dependency-check.version>5.3.2</maven.owasp.dependency-check.version>
 	</properties>
 	<scm>
 		<connection>scm:git:https://evolvis.org/anonscm/git/tartools/background-jobs.git</connection>
@@ -73,6 +75,34 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-jar-plugin</artifactId>
+			</plugin>
+			<plugin>
+				<!-- mvn -Ddependency-check.skip … -->
+				<groupId>org.owasp</groupId>
+				<artifactId>dependency-check-maven</artifactId>
+				<version>${maven.owasp.dependency-check.version}</version>
+				<executions>
+					<execution>
+						<id>owasp-check</id>
+						<phase>install</phase>
+						<goals>
+							<goal>aggregate</goal>
+						</goals>
+						<configuration>
+							<failBuildOnCVSS>8</failBuildOnCVSS>
+							<scanSet>
+								<fileSet>
+									<directory>src</directory>
+								</fileSet>
+							</scanSet>
+							<skipArtifactType>pom</skipArtifactType>
+							<!-- suppressionFiles>
+								<suppressionFile>src/main/ancillary/dependency-check-suppressions.xml</suppressionFile>
+							</suppressionFiles -->
+						</configuration>
+					</execution>
+				</executions>
+				<inherited>false</inherited>
 			</plugin>
 		</plugins>
 	</build>
