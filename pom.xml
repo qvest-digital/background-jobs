@@ -88,14 +88,6 @@
 				</executions>
 				<inherited>false</inherited>
 			</plugin>
-			<plugin>
-				<groupId>com.mycila</groupId>
-				<artifactId>license-maven-plugin</artifactId>
-				<inherited>false</inherited>
-				<configuration>
-					<header>${project.basedir}/src/main/ancillary/LICENCE.hdr</header>
-				</configuration>
-			</plugin>
 		</plugins>
 	</build>
 	<dependencyManagement>
