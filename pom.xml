@@ -31,7 +31,7 @@
 		<archiver.copyright.firstyear>2012</archiver.copyright.firstyear>
 		<archiver.copyright.lastyear>2016</archiver.copyright.lastyear>
 		<!-- for now (legacy code) -->
-		<doclint.optappend>-Xdoclint:none</doclint.optappend>
+		<javadoc.doclint>none</javadoc.doclint>
 		<sonar.sources>src/main</sonar.sources>
 		<sonar.tests>src/test</sonar.tests>
 		<!-- dependencies -->
