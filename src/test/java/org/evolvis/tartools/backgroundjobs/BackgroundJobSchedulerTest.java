@@ -44,6 +44,7 @@ public class BackgroundJobSchedulerTest {
         AFTER_CALL
     }
 
+    @SuppressWarnings("unused")
     Sequencer<Steps> seq = Sequencer.forFixedSteps(Steps.values());
     private BackgroundJobScheduler scheduler;
 
@@ -61,9 +62,9 @@ public class BackgroundJobSchedulerTest {
     }
 
     private static class DummyJob implements BackgroundJob<Object> {
-
         boolean shouldRun = true;
 
+        @SuppressWarnings("unused")
         public void stop() {
             shouldRun = false;
         }
@@ -111,10 +112,8 @@ public class BackgroundJobSchedulerTest {
     public void testEarlyAbort() throws InterruptedException,
       ExecutionException {
         BackgroundJob<String> jobToBeAborted = new BackgroundJob<String>() {
-
             @Override
-            public String work(BackgroundJobMonitor monitor) throws Exception {
-
+            public String work(BackgroundJobMonitor monitor) {
                 throw new RuntimeException("this should never execute");
             }
 
@@ -131,15 +130,12 @@ public class BackgroundJobSchedulerTest {
             }
 
             @Override
-            public String work(BackgroundJobMonitor monitor) throws Exception {
-
+            public String work(BackgroundJobMonitor monitor) {
                 return "cool.";
             }
         };
-        BackgroundJobStatus<String> abortedJob = scheduler
-          .schedule(jobToBeAborted);
-        BackgroundJobStatus<String> executedJob = scheduler
-          .schedule(jobToBeExecuted);
+        BackgroundJobStatus<String> abortedJob = scheduler.schedule(jobToBeAborted);
+        BackgroundJobStatus<String> executedJob = scheduler.schedule(jobToBeExecuted);
         abortedJob.abort();
         assertEquals(executedJob, scheduler.executeNext());
         assertEquals(State.ABORTED, abortedJob.getState());

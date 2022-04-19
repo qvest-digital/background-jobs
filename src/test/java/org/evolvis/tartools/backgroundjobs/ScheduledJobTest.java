@@ -32,7 +32,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
-import org.mockito.invocation.InvocationOnMock;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.mockito.stubbing.Answer;
 
@@ -47,6 +46,7 @@ import static org.mockito.Mockito.*;
 
 @RunWith(MockitoJUnitRunner.class)
 public class ScheduledJobTest {
+    @SuppressWarnings("NewClassNamingConvention")
     enum Steps {
         START,
         BEFORE_CALL,
@@ -70,8 +70,8 @@ public class ScheduledJobTest {
     @Mock
     private BackgroundJobLog jobLog;
 
+    @SuppressWarnings("NewClassNamingConvention")
     private class CallableWrapper implements Callable<String> {
-
         final Callable<String> delegatee;
 
         public CallableWrapper(Callable<String> delegatee) {
@@ -93,51 +93,36 @@ public class ScheduledJobTest {
     @SuppressWarnings("unchecked")
     @Before
     public void setup() {
-
         when(jobLogFactory.createJobLog(anyString())).thenReturn(jobLog);
 
         when(futureFactory.createFutureTask((Callable<String>) any()))
-          .thenAnswer(new Answer<FutureTask<String>>() {
-
-              @Override
-              public FutureTask<String> answer(InvocationOnMock invocation)
-                throws Throwable {
-                  Callable<String> callable = (Callable<String>) invocation
-                    .getArguments()[0];
-                  callableWrapper = new CallableWrapper(callable);
-                  return new FutureTask<String>(callableWrapper);
-              }
+          .thenAnswer((Answer<FutureTask<String>>) invocation -> {
+              Callable<String> callable = (Callable<String>) invocation.getArguments()[0];
+              callableWrapper = new CallableWrapper(callable);
+              return new FutureTask<>(callableWrapper);
           });
 
-        when(threadFactory.createThread((FutureTask<String>) any()))
-          .thenAnswer(new Answer<BackgroundThread>() {
+        when(threadFactory.createThread(any()))
+          .thenAnswer((Answer<BackgroundThread>) invocation -> {
+              FutureTask<String> future = (FutureTask<String>) invocation.getArguments()[0];
+              thread = new Thread(future, "testwork");
+              return new BackgroundThread() {
+                  @Override
+                  public void start() {
+                      System.err.println("Thread.start()");
+                      thread.start();
+                  }
 
-              @Override
-              public BackgroundThread answer(InvocationOnMock invocation)
-                throws Throwable {
-                  FutureTask<String> future = (FutureTask<String>) invocation
-                    .getArguments()[0];
-                  thread = new Thread(future, "testwork");
-                  return new BackgroundThread() {
-
-                      @Override
-                      public void start() {
-                          System.err.println("Thread.start()");
-                          thread.start();
-                      }
-
-                      @Override
-                      public void join(long timeout)
-                        throws InterruptedException {
-                          System.err.println("Thread.join() ENTER");
-                          thread.join(timeout);
-                          System.err.println("Thread.join() EXIT");
-                      }
-                  };
-              }
+                  @Override
+                  public void join(long timeout)
+                    throws InterruptedException {
+                      System.err.println("Thread.join() ENTER");
+                      thread.join(timeout);
+                      System.err.println("Thread.join() EXIT");
+                  }
+              };
           });
-        scheduledJob = new ScheduledJob<String>(job, threadFactory,
-          futureFactory, jobLogFactory);
+        scheduledJob = new ScheduledJob<>(job, threadFactory, futureFactory, jobLogFactory);
     }
 
     @Test
@@ -149,16 +134,10 @@ public class ScheduledJobTest {
 
     @Test
     public void testSuccessSequence() throws Throwable {
-
-        when(job.work(any(BackgroundJobMonitor.class))).thenAnswer(
-          new Answer<String>() {
-
-              @Override
-              public String answer(InvocationOnMock invocation)
-                throws Throwable {
-                  seq.checkpoint(Steps.WORKING);
-                  return "result";
-              }
+        when(job.work(any(BackgroundJobMonitor.class)))
+          .thenAnswer((Answer<String>) invocation -> {
+              seq.checkpoint(Steps.WORKING);
+              return "result";
           });
         assertEquals(State.SCHEDULED, scheduledJob.getState());
         assertStateAtStep(State.STARTING, Steps.BEFORE_CALL);
@@ -171,16 +150,10 @@ public class ScheduledJobTest {
 
     @Test
     public void testFailureSequence() throws Throwable {
-
-        when(job.work(any(BackgroundJobMonitor.class))).thenAnswer(
-          new Answer<String>() {
-
-              @Override
-              public String answer(InvocationOnMock invocation)
-                throws Throwable {
-                  seq.checkpoint(Steps.WORKING);
-                  throw new RuntimeException();
-              }
+        when(job.work(any(BackgroundJobMonitor.class)))
+          .thenAnswer((Answer<String>) invocation -> {
+              seq.checkpoint(Steps.WORKING);
+              throw new RuntimeException();
           });
         assertEquals(State.SCHEDULED, scheduledJob.getState());
         assertStateAtStep(State.STARTING, Steps.BEFORE_CALL);
@@ -191,7 +164,7 @@ public class ScheduledJobTest {
             scheduledJob.result();
             fail("expected an exception.");
         } catch (ExecutionException e) {
-            ;// expected.
+            // expected.
         }
         assertEquals(State.FAILED, scheduledJob.getState());
         seq.throwAnyError();
@@ -199,35 +172,24 @@ public class ScheduledJobTest {
 
     @Test
     public void testAbortSequence() throws Throwable {
-
-        when(job.work(any(BackgroundJobMonitor.class))).thenAnswer(
-          new Answer<String>() {
-
-              @Override
-              public String answer(InvocationOnMock invocation)
-                throws Throwable {
-                  try {
-                      seq.checkpoint(Steps.WORKING);
-                  } catch (InterruptedException e) {
-                      return "interrupted";
-                  }
-                  return "result";
+        when(job.work(any(BackgroundJobMonitor.class)))
+          .thenAnswer((Answer<String>) invocation -> {
+              try {
+                  seq.checkpoint(Steps.WORKING);
+              } catch (InterruptedException e) {
+                  return "interrupted";
               }
+              return "result";
           });
         assertEquals(State.SCHEDULED, scheduledJob.getState());
         assertStateAtStep(State.STARTING, Steps.BEFORE_CALL);
         assertStateAtStep(State.ABORTED, Steps.AFTER_CALL);
-        seq.addAction(Steps.WORKING, new Runnable() {
-
-            @Override
-            public void run() {
-                assertEquals(State.RUNNING, scheduledJob.getState());
-                scheduledJob.abort();
-                State state = scheduledJob.getState();
-                if (!state.equals(State.ABORTED)
-                  && !state.equals(State.ABORTING)) {
-                    fail();
-                }
+        seq.addAction(Steps.WORKING, () -> {
+            assertEquals(State.RUNNING, scheduledJob.getState());
+            scheduledJob.abort();
+            State state = scheduledJob.getState();
+            if (!state.equals(State.ABORTED) && !state.equals(State.ABORTING)) {
+                fail();
             }
         });
 
@@ -236,7 +198,7 @@ public class ScheduledJobTest {
             scheduledJob.result();
             fail("expected an exception.");
         } catch (CancellationException e) {
-            ;// expected.
+            // expected.
         }
         scheduledJob.join(0);
         assertEquals(State.ABORTED, scheduledJob.getState());
@@ -244,34 +206,21 @@ public class ScheduledJobTest {
     }
 
     private void assertStateAtStep(final State scheduled, final Steps start) {
-        seq.addAction(start, new Runnable() {
-
-            @Override
-            public void run() {
-
-                assertEquals(scheduled, scheduledJob.getState());
-            }
-        });
+        seq.addAction(start, () -> assertEquals(scheduled, scheduledJob.getState()));
     }
 
     @Test
     public void testDeadlockWhenAbortingDuringStarting() throws Throwable {
-        when(job.work(any(BackgroundJobMonitor.class))).thenAnswer(
-          new Answer<String>() {
-
-              @Override
-              public String answer(InvocationOnMock invocation)
-                throws Throwable {
-                  try {
-                      seq.checkpoint(Steps.WORKING);
-                  } catch (InterruptedException e) {
-                      return "interrupted";
-                  }
-                  return "result";
+        when(job.work(any(BackgroundJobMonitor.class)))
+          .thenAnswer((Answer<String>) invocation -> {
+              try {
+                  seq.checkpoint(Steps.WORKING);
+              } catch (InterruptedException e) {
+                  return "interrupted";
               }
+              return "result";
           });
         scheduledJob.addJobListener(new JobListener() {
-
             @Override
             public void stateChanged(JobEvent e) {
                 System.err.println(e.getOldState() + " --> " + e.getNewState());
@@ -286,18 +235,13 @@ public class ScheduledJobTest {
 
             @Override
             public void progressInfoUpdated(JobEvent e) {
-
             }
         });
-        seq.addAction(Steps.START, new Runnable() {
-
-            @Override
-            public void run() {
-                assertEquals(State.STARTING, scheduledJob.getState());
-                scheduledJob.abort();
-                System.err.println("aborting");
-                assertEquals(State.ABORTING_STARTING, scheduledJob.getState());
-            }
+        seq.addAction(Steps.START, () -> {
+            assertEquals(State.STARTING, scheduledJob.getState());
+            scheduledJob.abort();
+            System.err.println("aborting");
+            assertEquals(State.ABORTING_STARTING, scheduledJob.getState());
         });
         scheduledJob.execute();
         scheduledJob.join(0);
