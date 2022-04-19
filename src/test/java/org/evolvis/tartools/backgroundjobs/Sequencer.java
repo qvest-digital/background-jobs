@@ -72,7 +72,7 @@ public class Sequencer<T> {
 		return new Sequencer<C>(cc);
 	}
 
-	public static <C> Sequencer<C> forFixedSteps(C... steps) {
+	public static <C> Sequencer<C> forFixedSteps(C[] steps) {
 		final HashMap<C, Integer> positions = new HashMap<C, Integer>();
 		for (int i = 0; i < steps.length; i++) {
 			positions.put(steps[i], i);
