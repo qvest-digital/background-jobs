@@ -11,95 +11,29 @@
   <keepDependencies>false</keepDependencies>
   <properties>
     <hudson.security.AuthorizationMatrixProperty>
-      <permission>com.cloudbees.plugins.credentials.CredentialsProvider.Create:adirla</permission>
-      <permission>com.cloudbees.plugins.credentials.CredentialsProvider.Create:afreid</permission>
-      <permission>com.cloudbees.plugins.credentials.CredentialsProvider.Create:eausch</permission>
-      <permission>com.cloudbees.plugins.credentials.CredentialsProvider.Create:ldegen</permission>
-      <permission>com.cloudbees.plugins.credentials.CredentialsProvider.Create:mpech</permission>
       <permission>com.cloudbees.plugins.credentials.CredentialsProvider.Create:tartools</permission>
       <permission>com.cloudbees.plugins.credentials.CredentialsProvider.Create:tglase</permission>
-      <permission>com.cloudbees.plugins.credentials.CredentialsProvider.Create:thense</permission>
-      <permission>com.cloudbees.plugins.credentials.CredentialsProvider.Delete:adirla</permission>
-      <permission>com.cloudbees.plugins.credentials.CredentialsProvider.Delete:afreid</permission>
-      <permission>com.cloudbees.plugins.credentials.CredentialsProvider.Delete:eausch</permission>
-      <permission>com.cloudbees.plugins.credentials.CredentialsProvider.Delete:ldegen</permission>
-      <permission>com.cloudbees.plugins.credentials.CredentialsProvider.Delete:mpech</permission>
       <permission>com.cloudbees.plugins.credentials.CredentialsProvider.Delete:tartools</permission>
       <permission>com.cloudbees.plugins.credentials.CredentialsProvider.Delete:tglase</permission>
-      <permission>com.cloudbees.plugins.credentials.CredentialsProvider.Delete:thense</permission>
-      <permission>com.cloudbees.plugins.credentials.CredentialsProvider.Update:adirla</permission>
-      <permission>com.cloudbees.plugins.credentials.CredentialsProvider.Update:afreid</permission>
-      <permission>com.cloudbees.plugins.credentials.CredentialsProvider.Update:eausch</permission>
-      <permission>com.cloudbees.plugins.credentials.CredentialsProvider.Update:ldegen</permission>
-      <permission>com.cloudbees.plugins.credentials.CredentialsProvider.Update:mpech</permission>
       <permission>com.cloudbees.plugins.credentials.CredentialsProvider.Update:tartools</permission>
       <permission>com.cloudbees.plugins.credentials.CredentialsProvider.Update:tglase</permission>
-      <permission>com.cloudbees.plugins.credentials.CredentialsProvider.Update:thense</permission>
-      <permission>hudson.model.Item.Build:adirla</permission>
-      <permission>hudson.model.Item.Build:afreid</permission>
-      <permission>hudson.model.Item.Build:eausch</permission>
-      <permission>hudson.model.Item.Build:ldegen</permission>
-      <permission>hudson.model.Item.Build:mpech</permission>
       <permission>hudson.model.Item.Build:tartools</permission>
       <permission>hudson.model.Item.Build:tglase</permission>
-      <permission>hudson.model.Item.Build:thense</permission>
-      <permission>hudson.model.Item.Cancel:adirla</permission>
-      <permission>hudson.model.Item.Cancel:afreid</permission>
-      <permission>hudson.model.Item.Cancel:eausch</permission>
-      <permission>hudson.model.Item.Cancel:ldegen</permission>
-      <permission>hudson.model.Item.Cancel:mpech</permission>
       <permission>hudson.model.Item.Cancel:tartools</permission>
       <permission>hudson.model.Item.Cancel:tglase</permission>
-      <permission>hudson.model.Item.Cancel:thense</permission>
-      <permission>hudson.model.Item.Configure:adirla</permission>
-      <permission>hudson.model.Item.Configure:afreid</permission>
-      <permission>hudson.model.Item.Configure:eausch</permission>
-      <permission>hudson.model.Item.Configure:ldegen</permission>
-      <permission>hudson.model.Item.Configure:mpech</permission>
       <permission>hudson.model.Item.Configure:tartools</permission>
       <permission>hudson.model.Item.Configure:tglase</permission>
-      <permission>hudson.model.Item.Configure:thense</permission>
       <permission>hudson.model.Item.Delete:tglase</permission>
-      <permission>hudson.model.Item.Read:adirla</permission>
-      <permission>hudson.model.Item.Read:afreid</permission>
-      <permission>hudson.model.Item.Read:eausch</permission>
-      <permission>hudson.model.Item.Read:ldegen</permission>
-      <permission>hudson.model.Item.Read:mpech</permission>
       <permission>hudson.model.Item.Read:tartools</permission>
       <permission>hudson.model.Item.Read:tglase</permission>
-      <permission>hudson.model.Item.Read:thense</permission>
-      <permission>hudson.model.Item.Release:adirla</permission>
-      <permission>hudson.model.Item.Release:afreid</permission>
-      <permission>hudson.model.Item.Release:eausch</permission>
-      <permission>hudson.model.Item.Release:ldegen</permission>
-      <permission>hudson.model.Item.Release:mpech</permission>
       <permission>hudson.model.Item.Release:tartools</permission>
       <permission>hudson.model.Item.Release:tglase</permission>
-      <permission>hudson.model.Item.Release:thense</permission>
-      <permission>hudson.model.Item.Workspace:adirla</permission>
-      <permission>hudson.model.Item.Workspace:afreid</permission>
-      <permission>hudson.model.Item.Workspace:eausch</permission>
-      <permission>hudson.model.Item.Workspace:ldegen</permission>
-      <permission>hudson.model.Item.Workspace:mpech</permission>
       <permission>hudson.model.Item.Workspace:tartools</permission>
       <permission>hudson.model.Item.Workspace:tglase</permission>
-      <permission>hudson.model.Item.Workspace:thense</permission>
-      <permission>hudson.model.Run.Update:adirla</permission>
-      <permission>hudson.model.Run.Update:afreid</permission>
-      <permission>hudson.model.Run.Update:eausch</permission>
-      <permission>hudson.model.Run.Update:ldegen</permission>
-      <permission>hudson.model.Run.Update:mpech</permission>
       <permission>hudson.model.Run.Update:tartools</permission>
       <permission>hudson.model.Run.Update:tglase</permission>
-      <permission>hudson.model.Run.Update:thense</permission>
-      <permission>hudson.scm.SCM.Tag:adirla</permission>
-      <permission>hudson.scm.SCM.Tag:afreid</permission>
-      <permission>hudson.scm.SCM.Tag:eausch</permission>
-      <permission>hudson.scm.SCM.Tag:ldegen</permission>
-      <permission>hudson.scm.SCM.Tag:mpech</permission>
       <permission>hudson.scm.SCM.Tag:tartools</permission>
       <permission>hudson.scm.SCM.Tag:tglase</permission>
-      <permission>hudson.scm.SCM.Tag:thense</permission>
     </hudson.security.AuthorizationMatrixProperty>
     <hudson.model.ParametersDefinitionProperty>
       <parameterDefinitions>
@@ -177,14 +111,7 @@ H * * * *
   <blockTriggerWhenBuilding>true</blockTriggerWhenBuilding>
   <settings class="jenkins.mvn.DefaultSettingsProvider"/>
   <globalSettings class="jenkins.mvn.DefaultGlobalSettingsProvider"/>
-  <reporters>
-    <hudson.maven.reporters.MavenMailer>
-      <recipients>tartools-commits@lists.evolvis.org</recipients>
-      <dontNotifyEveryUnstableBuild>false</dontNotifyEveryUnstableBuild>
-      <sendToIndividuals>false</sendToIndividuals>
-      <perModuleEmail>false</perModuleEmail>
-    </hudson.maven.reporters.MavenMailer>
-  </reporters>
+  <reporters/>
   <publishers>
     <hudson.plugins.sonar.SonarPublisher plugin="sonar@2.1">
       <jdk>OpenJDK 8 (System)</jdk>
