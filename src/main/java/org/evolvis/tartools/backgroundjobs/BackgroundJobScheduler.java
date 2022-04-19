@@ -140,7 +140,13 @@ public class BackgroundJobScheduler implements Runnable {
 		return scheduledJob;
 	}
 
+	@Deprecated
 	public <T> BackgroundJobStatus<T> scheduldeImmediately(BackgroundJob<T> job) {
+		// typo fix (kept for API)
+		return scheduleImmediately(job);
+	}
+
+	public <T> BackgroundJobStatus<T> scheduleImmediately(BackgroundJob<T> job) {
 		ScheduledJob<T> scheduledJob = null;
 		synchronized (this) {
 			if (isIdle()) {
