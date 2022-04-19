@@ -44,6 +44,9 @@ public class BackgroundJobSchedulerTest {
         AFTER_CALL
     }
 
+    private interface BackgroundJobForObject extends BackgroundJob<Object> {
+    }
+
     @SuppressWarnings("unused")
     Sequencer<Steps> seq = Sequencer.forFixedSteps(Steps.values());
     private BackgroundJobScheduler scheduler;
@@ -92,7 +95,7 @@ public class BackgroundJobSchedulerTest {
         DummyJob dummyJob = new DummyJob();
         scheduler.schedule(dummyJob);
 
-        BackgroundJob<Object> job = mock(BackgroundJob.class);
+        BackgroundJob<Object> job = mock(BackgroundJobForObject.class);
         BackgroundJobStatus<Object> result = scheduler.scheduleImmediately(job);
         assertNull(result);
     }
@@ -101,7 +104,7 @@ public class BackgroundJobSchedulerTest {
     public void testScheduleImmediately1() throws InterruptedException {
         scheduler.ensureStarted();
 
-        BackgroundJob<Object> job = mock(BackgroundJob.class);
+        BackgroundJob<Object> job = mock(BackgroundJobForObject.class);
         BackgroundJobStatus<Object> result = scheduler.scheduleImmediately(job);
         assertNotNull(result);
         result.join(1000);
