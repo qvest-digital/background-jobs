@@ -29,7 +29,7 @@
 	</developers>
 	<properties>
 		<archiver.copyright.firstyear>2012</archiver.copyright.firstyear>
-		<archiver.copyright.lastyear>2016</archiver.copyright.lastyear>
+		<archiver.copyright.lastyear>2022</archiver.copyright.lastyear>
 		<!-- for now (legacy code) -->
 		<javadoc.doclint>none</javadoc.doclint>
 		<sonar.sources>src/main</sonar.sources>
