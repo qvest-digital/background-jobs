@@ -93,7 +93,7 @@ public class BackgroundJobSchedulerTest {
         scheduler.schedule(dummyJob);
 
         BackgroundJob<Object> job = mock(BackgroundJob.class);
-        BackgroundJobStatus<Object> result = scheduler.scheduldeImmediately(job);
+        BackgroundJobStatus<Object> result = scheduler.scheduleImmediately(job);
         assertNull(result);
     }
 
@@ -102,7 +102,7 @@ public class BackgroundJobSchedulerTest {
         scheduler.ensureStarted();
 
         BackgroundJob<Object> job = mock(BackgroundJob.class);
-        BackgroundJobStatus<Object> result = scheduler.scheduldeImmediately(job);
+        BackgroundJobStatus<Object> result = scheduler.scheduleImmediately(job);
         assertNotNull(result);
         result.join(1000);
         assertEquals(State.SUCCEEDED, result.getState());
