@@ -27,130 +27,126 @@ package org.evolvis.tartools.backgroundjobs;
  * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-import static org.junit.Assert.*;
-import static org.mockito.Mockito.*;
+import org.evolvis.tartools.backgroundjobs.BackgroundJobInfo.State;
+import org.junit.Before;
+import org.junit.Test;
 
 import java.util.concurrent.ExecutionException;
 
-import org.junit.Before;
-import org.junit.Ignore;
-import org.junit.Test;
-
-import org.evolvis.tartools.backgroundjobs.BackgroundJob;
-import org.evolvis.tartools.backgroundjobs.BackgroundJobMonitor;
-import org.evolvis.tartools.backgroundjobs.BackgroundJobScheduler;
-import org.evolvis.tartools.backgroundjobs.BackgroundJobStatus;
-import org.evolvis.tartools.backgroundjobs.BackgroundJobInfo.State;
+import static org.junit.Assert.*;
+import static org.mockito.Mockito.*;
 
 public class BackgroundJobSchedulerTest {
-	enum Steps {
-		START, BEFORE_CALL, WORKING, AFTER_CALL
-	}
+    enum Steps {
+        START,
+        BEFORE_CALL,
+        WORKING,
+        AFTER_CALL
+    }
 
-	Sequencer<Steps> seq = Sequencer.forFixedSteps(Steps.values());
-	private BackgroundJobScheduler scheduler;
+    Sequencer<Steps> seq = Sequencer.forFixedSteps(Steps.values());
+    private BackgroundJobScheduler scheduler;
 
-	@Before
-	public void setup() {
-		scheduler = new BackgroundJobScheduler();
-	}
+    @Before
+    public void setup() {
+        scheduler = new BackgroundJobScheduler();
+    }
 
-	@Test
-	public void testALotOfTimes() throws InterruptedException,
-			ExecutionException {
-		for (int i = 0; i < 1000; i++) {
-			testEarlyAbort();
-		}
-	}
+    @Test
+    public void testALotOfTimes() throws InterruptedException,
+      ExecutionException {
+        for (int i = 0; i < 1000; i++) {
+            testEarlyAbort();
+        }
+    }
 
-	private static class DummyJob implements BackgroundJob<Object>{
+    private static class DummyJob implements BackgroundJob<Object> {
 
-		boolean shouldRun=true;
+        boolean shouldRun = true;
 
-		public void stop(){
-			shouldRun=false;
-		}
+        public void stop() {
+            shouldRun = false;
+        }
 
-		@Override
-		public Object work(BackgroundJobMonitor monitor) throws Exception {
-			while(shouldRun){
-				synchronized(this){
-					wait(50);
-				}
-			}
-			return "fertig!";
-		}
+        @Override
+        public Object work(BackgroundJobMonitor monitor) throws Exception {
+            while (shouldRun) {
+                synchronized (this) {
+                    wait(50);
+                }
+            }
+            return "fertig!";
+        }
 
-		@Override
-		public String getDescription() {
-			return "Ich bin ein Dummy-Job";
-		}
+        @Override
+        public String getDescription() {
+            return "Ich bin ein Dummy-Job";
+        }
+    }
 
-	}
+    @Test
+    public void testScheduleImmediately() {
+        scheduler.ensureStarted();
 
-	@Test
-	public void testScheduleImmediately() {
-		scheduler.ensureStarted();
+        DummyJob dummyJob = new DummyJob();
+        scheduler.schedule(dummyJob);
 
-		DummyJob dummyJob = new DummyJob();
-		scheduler.schedule(dummyJob);
+        BackgroundJob<Object> job = mock(BackgroundJob.class);
+        BackgroundJobStatus<Object> result = scheduler.scheduldeImmediately(job);
+        assertNull(result);
+    }
 
-		BackgroundJob<Object> job = mock(BackgroundJob.class);
-		BackgroundJobStatus<Object> result = scheduler.scheduldeImmediately(job);
-		assertNull(result);
-	}
+    @Test
+    public void testScheduleImmediately1() throws InterruptedException {
+        scheduler.ensureStarted();
 
-	@Test
-	public void testScheduleImmediately1() throws InterruptedException {
-		scheduler.ensureStarted();
+        BackgroundJob<Object> job = mock(BackgroundJob.class);
+        BackgroundJobStatus<Object> result = scheduler.scheduldeImmediately(job);
+        assertNotNull(result);
+        result.join(1000);
+        assertEquals(State.SUCCEEDED, result.getState());
+    }
 
-		BackgroundJob<Object> job = mock(BackgroundJob.class);
-		BackgroundJobStatus<Object> result = scheduler.scheduldeImmediately(job);
-		assertNotNull(result);
-		result.join(1000);
-		assertEquals(State.SUCCEEDED, result.getState());
-	}
+    @Test
+    public void testEarlyAbort() throws InterruptedException,
+      ExecutionException {
+        BackgroundJob<String> jobToBeAborted = new BackgroundJob<String>() {
 
-	@Test
-	public void testEarlyAbort() throws InterruptedException,
-			ExecutionException {
-		BackgroundJob<String> jobToBeAborted = new BackgroundJob<String>() {
+            @Override
+            public String work(BackgroundJobMonitor monitor) throws Exception {
 
-			@Override
-			public String work(BackgroundJobMonitor monitor) throws Exception {
+                throw new RuntimeException("this should never execute");
+            }
 
-				throw new RuntimeException("this should never execute");
-			}
+            @Override
+            public String getDescription() {
+                return "Abort me!";
+            }
+        };
 
-			@Override
-			public String getDescription() {
-				return "Abort me!";
-			}
-		};
+        BackgroundJob<String> jobToBeExecuted = new BackgroundJob<String>() {
+            @Override
+            public String getDescription() {
+                return "Go ahead... make my day.";
+            }
 
-		BackgroundJob<String> jobToBeExecuted = new BackgroundJob<String>() {
-			@Override
-			public String getDescription() {
-				return "Go ahead... make my day.";
-			}
+            @Override
+            public String work(BackgroundJobMonitor monitor) throws Exception {
 
-			@Override
-			public String work(BackgroundJobMonitor monitor) throws Exception {
-
-				return "cool.";
-			}
-		};
-		BackgroundJobStatus<String> abortedJob = scheduler
-				.schedule(jobToBeAborted);
-		BackgroundJobStatus<String> executedJob = scheduler
-				.schedule(jobToBeExecuted);
-		abortedJob.abort();
-		assertEquals(executedJob, scheduler.executeNext());
-		assertEquals(State.ABORTED, abortedJob.getState());
-		assertEquals("cool.", executedJob.result());
-		if (executedJob.getState() != State.SUCCEEDED) {
-			System.out.println("break");
-		}
-		assertEquals(State.SUCCEEDED, executedJob.getState());
-	}
+                return "cool.";
+            }
+        };
+        BackgroundJobStatus<String> abortedJob = scheduler
+          .schedule(jobToBeAborted);
+        BackgroundJobStatus<String> executedJob = scheduler
+          .schedule(jobToBeExecuted);
+        abortedJob.abort();
+        assertEquals(executedJob, scheduler.executeNext());
+        assertEquals(State.ABORTED, abortedJob.getState());
+        assertEquals("cool.", executedJob.result());
+        if (executedJob.getState() != State.SUCCEEDED) {
+            System.out.println("break");
+        }
+        assertEquals(State.SUCCEEDED, executedJob.getState());
+    }
 }
