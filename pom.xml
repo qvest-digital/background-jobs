@@ -35,7 +35,7 @@
 		<sonar.sources>src/main</sonar.sources>
 		<sonar.tests>src/test</sonar.tests>
 		<!-- dependencies -->
-		<mockito1.version>1.10.19</mockito1.version>
+		<mockito.version>4.4.0</mockito.version>
 		<junit.version>4.13.2</junit.version>
 		<!-- maven plugins -->
 		<maven.owasp.dependency-check.version>7.0.4</maven.owasp.dependency-check.version>
@@ -101,7 +101,7 @@
 			<dependency>
 				<groupId>org.mockito</groupId>
 				<artifactId>mockito-core</artifactId>
-				<version>${mockito1.version}</version>
+				<version>${mockito.version}</version>
 				<scope>test</scope>
 			</dependency>
 		</dependencies>
