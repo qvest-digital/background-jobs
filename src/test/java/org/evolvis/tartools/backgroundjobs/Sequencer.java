@@ -3,9 +3,9 @@ package org.evolvis.tartools.backgroundjobs;
 /*-
  * Background-Jobs is Copyright
  *  © 2012 Атанас Александров (a.alexandrov@tarent.de)
- *  © 2012, 2013, 2014, 2015 Lukas Degener (l.degener@tarent.de)
+ *  © 2012, 2013, 2014, 2015 Lukas Degener (l.degener@qvest-digital.com)
  *  © 2015, 2016 Jens Oberender (j.oberender@tarent.de)
- * Licensor is tarent solutions GmbH, http://www.tarent.de/
+ * Licensor: Qvest Digital AG, Bonn, Germany
  *
  * Permission is hereby granted, free of charge, to any person obtaining
  * a copy of this software and associated documentation files (the
