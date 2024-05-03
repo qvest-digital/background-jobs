@@ -34,11 +34,13 @@
 		<javadoc.doclint>none</javadoc.doclint>
 		<sonar.sources>src/main</sonar.sources>
 		<sonar.tests>src/test</sonar.tests>
-		<!-- dependencies -->
+		<!-- ‣ dependencies -->
 		<mockito.version>4.4.0</mockito.version>
 		<junit.version>4.13.2</junit.version>
-		<!-- maven plugins -->
+		<!-- ‣ maven plugins -->
 		<maven.owasp.dependency-check.version>9.1.0</maven.owasp.dependency-check.version>
+		<!-- ‣ release management -->
+		<project.build.outputTimestamp>1970-01-01T00:00:00Z</project.build.outputTimestamp>
 	</properties>
 	<scm>
 		<connection>scm:git:https://evolvis.org/anonscm/git/tartools/background-jobs.git</connection>
