@@ -23,7 +23,6 @@
       <permission>hudson.model.Item.Cancel:tglase</permission>
       <permission>hudson.model.Item.Configure:tartools</permission>
       <permission>hudson.model.Item.Configure:tglase</permission>
-      <permission>hudson.model.Item.Delete:tglase</permission>
       <permission>hudson.model.Item.Read:tartools</permission>
       <permission>hudson.model.Item.Read:tglase</permission>
       <permission>hudson.model.Item.Release:tartools</permission>
@@ -83,14 +82,7 @@ Only relevant when performing a release.</description>
   <blockBuildWhenDownstreamBuilding>false</blockBuildWhenDownstreamBuilding>
   <blockBuildWhenUpstreamBuilding>false</blockBuildWhenUpstreamBuilding>
   <jdk>(Default)</jdk>
-  <triggers>
-    <hudson.triggers.SCMTrigger>
-      <spec># alle Stunde
-H * * * *
-</spec>
-      <ignorePostCommitHooks>false</ignorePostCommitHooks>
-    </hudson.triggers.SCMTrigger>
-  </triggers>
+  <triggers/>
   <concurrentBuild>false</concurrentBuild>
   <rootModule>
     <groupId>org.evolvis.tartools</groupId>
