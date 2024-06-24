@@ -4,7 +4,7 @@
 	<parent>
 		<groupId>org.evolvis.tartools.maven-parent</groupId>
 		<artifactId>pom</artifactId>
-		<version>3.1</version>
+		<version>3.2-SNAPSHOT</version>
 	</parent>
 	<groupId>org.evolvis.tartools</groupId>
 	<artifactId>background-jobs</artifactId>
@@ -38,7 +38,7 @@
 		<mockito.version>4.4.0</mockito.version>
 		<junit.version>4.13.2</junit.version>
 		<!-- ‣ maven plugins -->
-		<maven.owasp.dependency-check.version>9.1.0</maven.owasp.dependency-check.version>
+		<maven.owasp.dependency-check.version>9.2.0</maven.owasp.dependency-check.version>
 		<!-- ‣ release management -->
 		<project.build.outputTimestamp>2024-05-10T17:14:39Z</project.build.outputTimestamp>
 	</properties>
